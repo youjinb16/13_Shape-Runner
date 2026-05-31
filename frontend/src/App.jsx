@@ -7,6 +7,7 @@ import MapView from './components/MapView';
 import RotateControls from './components/RotateControls';
 import ShapeSelector from './components/ShapeSelector';
 import StatusPanel from './components/StatusPanel';
+import RouteComplexity from './components/RouteComplexity';
 import {
   densifyRoute,
   generateFullPathCoordinates,
@@ -232,6 +233,11 @@ const handleRotateRight = () => {
   graph={graph}
 />
 
+<RouteComplexity
+  path={fullPathCoordinates}
+/>
+
+        
 <RotateControls
   rotation={rotation}
   handleRotateLeft={handleRotateLeft}
