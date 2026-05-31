@@ -7,6 +7,7 @@ import MapView from './components/MapView';
 import RotateControls from './components/RotateControls';
 import ShapeSelector from './components/ShapeSelector';
 import StatusPanel from './components/StatusPanel';
+import ShapeAccuracy from './components/ShapeAccuracy'
 import {
   densifyRoute,
   generateFullPathCoordinates,
@@ -198,6 +199,8 @@ const handleRotateRight = () => {
           setDistance={setDistance}
         />
 
+        
+
       <h3
         style={{
           marginTop: '20px',
@@ -232,6 +235,14 @@ const handleRotateRight = () => {
   graph={graph}
 />
 
+
+<ShapeAccuracy
+  route={route}
+  fullPathCoordinates={
+    fullPathCoordinates
+  }
+/>
+
 <RotateControls
   rotation={rotation}
   handleRotateLeft={handleRotateLeft}
@@ -239,6 +250,8 @@ const handleRotateRight = () => {
   leftFlash={leftFlash}
   rightFlash={rightFlash}
 />
+
+
 
         <p style={{ marginBottom: '5px' }}>
           Rotation:{' '}
