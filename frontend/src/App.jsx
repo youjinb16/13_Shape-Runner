@@ -8,6 +8,7 @@ import RotateControls from './components/RotateControls';
 import ShapeSelector from './components/ShapeSelector';
 import StatusPanel from './components/StatusPanel';
 import ShapeAccuracy from './components/ShapeAccuracy'
+import RouteComplexity from './components/RouteComplexity';
 import {
   densifyRoute,
   generateFullPathCoordinates,
@@ -277,6 +278,10 @@ function App() {
           leftFlash={leftFlash}
           rightFlash={rightFlash}
         />
+
+<RouteComplexity
+  path={fullPathCoordinates}
+/>
 
 
         <p style={{ marginBottom: '5px' }}>
