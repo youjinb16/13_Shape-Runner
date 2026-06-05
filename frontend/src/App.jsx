@@ -272,6 +272,7 @@ function App() {
           rightFlash={rightFlash}
         />
 
+        {/* 🛠️ 최영 담당 추가/수정 파트: 원본 Shape와 실제 도로 매핑 경로 간의 유사도 등급 측정 UI 연동 */}
         <ShapeAccuracy
           route={route}
           fullPathCoordinates={
