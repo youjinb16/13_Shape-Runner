@@ -264,13 +264,6 @@ function App() {
           graph={graph}
         />
 
-        <ShapeAccuracy
-          route={route}
-          fullPathCoordinates={
-            fullPathCoordinates
-          }
-        />
-
         <RotateControls
           rotation={rotation}
           handleRotateLeft={handleRotateLeft}
@@ -279,17 +272,16 @@ function App() {
           rightFlash={rightFlash}
         />
 
-<RouteComplexity
-  path={fullPathCoordinates}
-/>
+        <ShapeAccuracy
+          route={route}
+          fullPathCoordinates={
+            fullPathCoordinates
+          }
+        />
 
-
-        <p style={{ marginBottom: '5px' }}>
-          Rotation:{' '}
-          <span style={{ color: rotation === 0 ? '#999' : '#1976d2' }}>
-            {rotation}°
-          </span>
-        </p>
+        <RouteComplexity
+          path={fullPathCoordinates}
+        />
 
         <h3 style={{ marginTop: '20px', fontSize: '14px', color: '#444' }}>
           5. GPX 파일로 저장하세요

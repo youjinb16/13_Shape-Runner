@@ -1,5 +1,15 @@
 import React from "react";
 
+
+//오류 헬퍼 함수 - 박유진 추가
+function getLat(point) {
+  return Array.isArray(point) ? point[0] : point.lat;
+}
+
+function getLng(point) {
+  return Array.isArray(point) ? point[1] : point.lng;
+}
+
 /**
  * 생성된 러닝 경로의 복잡도를 분석합니다.
  *
@@ -8,14 +18,14 @@ import React from "react";
  */
 
 function calculateAngle(a, b, c) {
-  const ab = {
-    x: b.lng - a.lng,
-    y: b.lat - a.lat,
+  const ab = { //원래 코드와 호응하도록 변경 - 박유진
+    x: getLng(b) - getLng(a),
+    y: getLat(b) - getLat(a),
   };
 
   const bc = {
-    x: c.lng - b.lng,
-    y: c.lat - b.lat,
+    x: getLng(c) - getLng(b),
+    y: getLat(c) - getLat(b),
   };
 
   // ==========================
@@ -85,13 +95,26 @@ function calculateSharpTurnCount(
 // 거리 계산
 // ======================================
 
-function calculateDistance(a, b) {
-  const dx = a.lng - b.lng;
-  const dy = a.lat - b.lat;
+function calculateDistance(a, b) { //메인 코드와 호응하도록 변경, km로 단위 통일 - 박유진
+  const lat1 = getLat(a);
+  const lon1 = getLng(a);
+  const lat2 = getLat(b);
+  const lon2 = getLng(b);
 
-  return Math.sqrt(
-    dx * dx + dy * dy
-  );
+  const R = 6371; // 지구 반지름 (km)
+
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+
+  const hav =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+      Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) ** 2;
+
+  const c = 2 * Math.atan2(Math.sqrt(hav), Math.sqrt(1 - hav));
+
+  return R * c; // km
 }
 
 function calculateTotalDistance(path) {
@@ -142,6 +165,9 @@ function classifyDifficulty(
 export default function RouteComplexityPanel({
   path,
 }) {
+
+  console.log(path);
+
   if (!path || path.length < 3) {
     return null;
   }
@@ -167,16 +193,19 @@ export default function RouteComplexityPanel({
         marginTop: "20px",
         padding: "16px",
         borderRadius: "12px",
-        background: "#f4f4f4",
+        background: "#ffffff",
         border: "1px solid #ddd",
       }}
     >
-      <h3>
-        Route Complexity
+      <h3
+      style={{
+        marginTop: "00px",
+      }}>
+        🗺️ Route Complexity 🗺️
       </h3>
 
       <p>
-        Difficulty:
+        코스 난이도:
         {" "}
         <strong>
           {difficulty}
@@ -184,21 +213,19 @@ export default function RouteComplexityPanel({
       </p>
 
       <p>
-        Sharp Turns:
+        급커브 수:
         {" "}
-        {sharpTurns}
+        <strong>
+        {sharpTurns}회
+        </strong>
       </p>
 
       <p>
-        Avg Segment:
-        {" "}
-        {avgSegmentLength.toFixed(6)}
+        평균 구간 길이: <strong>{(avgSegmentLength * 1000).toFixed(0)} m </strong>
       </p>
 
       <p>
-        Total Distance:
-        {" "}
-        {totalDistance.toFixed(6)}
+        총 거리: <strong>{totalDistance.toFixed(2)} km </strong>
       </p>
     </div>
   );

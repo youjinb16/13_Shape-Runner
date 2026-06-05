@@ -55,8 +55,11 @@ export default function ShapeAccuracy({
         background: '#fff',
       }}
     >
-      <h3>
-        ⭐ Shape Quality
+      <h3
+      style={{
+        marginTop: "00px",
+      }}>
+        ✨ Shape Quality ✨
       </h3>
 
       <p>
@@ -75,6 +78,7 @@ export default function ShapeAccuracy({
         </strong>
       </p>
 
+  
       <p
         style={{
           color: '#666',
@@ -83,6 +87,7 @@ export default function ShapeAccuracy({
       >
         {message}
       </p>
+      
     </div>
   )
 }
