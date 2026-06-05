@@ -7,6 +7,7 @@ import MapView from './components/MapView';
 import RotateControls from './components/RotateControls';
 import ShapeSelector from './components/ShapeSelector';
 import StatusPanel from './components/StatusPanel';
+import ShapeAccuracy from './components/ShapeAccuracy'
 import {
   densifyRoute,
   generateFullPathCoordinates,
@@ -202,9 +203,17 @@ function App() {
           setDistance={setDistance}
         />
 
-        <h3 style={{ marginTop: '20px', marginBottom: '8px', fontSize: '14px', color: '#444' }}>
-          3. 지도 위에서 시작 지점을 클릭하세요
-        </h3>
+
+      <h3
+        style={{
+          marginTop: '20px',
+          marginBottom: '8px',
+          fontSize: '14px',
+          color: '#444',
+        }}
+        >
+          3. 지도 위에서 시작 지점을 클릭하세요</h3>
+        
 
         <MapView
           startPoint={startPoint}
@@ -254,6 +263,13 @@ function App() {
           graph={graph}
         />
 
+        <ShapeAccuracy
+          route={route}
+          fullPathCoordinates={
+            fullPathCoordinates
+          }
+        />
+
         <RotateControls
           rotation={rotation}
           handleRotateLeft={handleRotateLeft}
@@ -261,6 +277,7 @@ function App() {
           leftFlash={leftFlash}
           rightFlash={rightFlash}
         />
+
 
         <p style={{ marginBottom: '5px' }}>
           Rotation:{' '}

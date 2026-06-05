@@ -9,7 +9,7 @@ export async function fetchGraphData(lat, lng) {
 
   try {
 
-    const API_BASE = 'http://172.30.1.7:3001'
+    const API_BASE = 'http://localhost:3001'
 
     const res = await fetch(`${API_BASE}/graph`, {
       method: 'POST',
