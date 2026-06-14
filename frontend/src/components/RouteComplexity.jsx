@@ -1,7 +1,31 @@
 import React from "react";
-
+/**
+ * 0607 강서현
+ *
+ * RouteComplexity 모듈
+ *
+ * 역할 :
+ * 생성된 러닝 경로의 복잡도를 분석하여
+ * 난이도(Easy / Medium / Hard),
+ * 급격한 회전 수(Sharp Turn),
+ * 평균 Segment 길이,
+ * 전체 경로 길이를 사용자에게 제공한다.
+ *
+ * 사용 자료구조 :
+ * - Array
+ * - Object
+ *
+ * 사용 알고리즘 :
+ * - 방향 변화 계산 알고리즘 (Vector Angle Calculation)
+ * - 선형 탐색 알고리즘 (Linear Search)
+ * - 임계값 기반 분류 알고리즘 (Threshold Classification)
+ */
 
 //오류 헬퍼 함수 - 박유진 추가
+
+// 0607 강서현
+// 벡터 내적(Dot Product)을 이용하여
+// 경로상의 회전 각도를 계산하는 함수
 function getLat(point) {
   return Array.isArray(point) ? point[0] : point.lat;
 }
@@ -56,9 +80,20 @@ function calculateAngle(a, b, c) {
 }
 
 
-// ======================================
-// Sharp Turn 계산
-// ======================================
+/**
+ * 0607 강서현
+ *
+ * 역할 :
+ * 경로 전체를 선형 탐색하여
+ * 급격한 회전(Sharp Turn)의 개수를 계산한다.
+ *
+ * 사용 자료구조 :
+ * - Array
+ *
+ * 사용 알고리즘 :
+ * - 선형 탐색 (Linear Search)
+ * - 방향 변화 계산 알고리즘
+ */
 
 function calculateSharpTurnCount(
   path,
@@ -117,6 +152,18 @@ function calculateDistance(a, b) { //메인 코드와 호응하도록 변경, km
   return R * c; // km
 }
 
+/**
+ * 0607 강서현
+ *
+ * 역할 :
+ * 경로 전체 길이를 계산한다.
+ *
+ * 사용 자료구조 :
+ * - Array
+ *
+ * 사용 알고리즘 :
+ * - 선형 탐색 (Linear Search)
+ */
 function calculateTotalDistance(path) {
   let total = 0;
 
@@ -131,10 +178,18 @@ function calculateTotalDistance(path) {
 }
 
 
-// ======================================
-// 난이도 분류
-// ======================================
-
+/**
+ * 0607 강서현
+ *
+ * 역할 :
+ * Sharp Turn 개수와
+ * 평균 Segment 길이를 기준으로
+ * 경로 난이도를 분류한다.
+ *
+ * 사용 알고리즘 :
+ * - 임계값 기반 분류 알고리즘
+ *   (Threshold Classification)
+ */
 function classifyDifficulty(
   sharpTurns,
   avgSegmentLength
@@ -158,9 +213,18 @@ function classifyDifficulty(
 }
 
 
-// ======================================
+
 // 메인 컴포넌트
-// ======================================
+
+/**
+ * 0607 강서현
+ *
+ * RouteComplexity 메인 컴포넌트
+ *
+ * 역할 :
+ * 경로 복잡도 분석 결과를
+ * 사용자에게 시각적으로 출력한다.
+ */
 
 export default function RouteComplexityPanel({
   path,
