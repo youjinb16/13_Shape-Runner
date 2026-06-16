@@ -34,6 +34,8 @@ import { exportGPXFile } from '../utils/exportGPX';
 import { buildGraph } from '../utils/graphUtils';
 
 import { exportGPXFile as exportGPXWithLRU } from '../utils/routeModule';
+// 0617 창현 - 추가: GPX 저장 시 시작점을 '현 위치'로 기록 (커뮤니티 가까운 순 정렬용)
+import { saveMyLocation } from '../utils/communityModule';
 
 export default function RouteGeneratorPage({
   onNavigate,
@@ -128,6 +130,8 @@ export default function RouteGeneratorPage({
     setTimeout(() => setGpxFlash(false), 600)
     // 0531 창현 - 기존 exportGPXFile을 LRU 자동 저장 기능이 추가된 버전으로 교체
     exportGPXWithLRU(fullPathCoordinates, 'Shape Runner 경로', shape, Number(distance))
+    // 0617 창현 - 추가: 현재 시작점을 '현 위치'로 저장 (커뮤니티 '가까운 순' 정렬 기준점)
+    if (startPoint) saveMyLocation(startPoint)
     setShowToast(true)
     setTimeout(() => setShowToast(false), 1500)
   }
