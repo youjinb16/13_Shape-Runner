@@ -10,6 +10,21 @@ import {
   smoothSharpTurns,
 } from '../utils/graphUtils'
 
+
+function calculateShapeLength(points) {
+  let total = 0
+
+  for (let i = 0; i < points.length - 1; i++) {
+    const dx = points[i + 1][0] - points[i][0]
+    const dy = points[i + 1][1] - points[i][1]
+
+    total += Math.sqrt(dx * dx + dy * dy)
+  }
+
+  return total
+}
+
+
 export function densifyRoute(route, steps = 5) {
   const result = []
 
@@ -42,7 +57,19 @@ export function generateRoute({
 }) {
     if (!shape || !startPoint || !distance) return []
 
-    const scale = Number(distance) / 2
+    
+
+    const originalLength =
+      calculateShapeLength(routeOffsets[shape])
+
+    const shapeKm =
+      originalLength * 111
+
+    const correctionFactor = 0.88
+
+    const scale =
+      (Number(distance) / shapeKm)
+      * correctionFactor
 
     // 회전 + 스케일 적용
     const transformedRoute = routeOffsets[shape].map(
@@ -73,10 +100,25 @@ export function generateRoute({
       startPoint[1] - firstPoint[1]
 
     // 전체 이동
-    return transformedRoute.map(([lat, lng]) => [
+    const route = transformedRoute.map(([lat, lng]) => [
       lat + latShift,
       lng + lngShift,
     ])
+
+    // 시작점을 마지막에 한번 더 추가
+    route.push(route[0])
+
+    console.log(
+      'requested distance:',
+      distance
+    )
+
+    console.log(
+      'shape distance:',
+      getPathLength(route)
+    )
+
+    return route
   }
 
   export function generateFullPathCoordinates({
@@ -84,15 +126,29 @@ export function generateRoute({
   denseRoute,
 }) {
 
-  const snappedNodes =
+  console.time('path-generation')
+
+  const rawSnappedNodes =
     graph && denseRoute.length
       ? denseRoute.map(([lat, lng]) =>
           findNearestNode(lat, lng, graph)
         )
-        .filter((node, index, arr) =>
-          node && node !== arr[index - 1]
-        )
       : []
+
+
+    const nullCount =
+      rawSnappedNodes.filter(node => !node).length
+
+    const snappedNodes =
+      rawSnappedNodes.filter(
+        (node, index, arr) =>
+          node && node !== arr[index - 1]
+      )
+
+  console.log(
+    'snappedNodes length:',
+    snappedNodes.length
+  )
 
   let fullPath = []
 
@@ -130,5 +186,50 @@ export function generateRoute({
         ])
       : []
 
+  const finalPath =
+    smoothSharpTurns(rawCoordinates)
+
+  console.log(
+  'actual distance km:',
+  getPathLength(finalPath)
+)
+
+console.log(
+  'snap ratio:',
+  snappedNodes.length / denseRoute.length
+)
+
+  console.timeEnd('path-generation')
+  return finalPath
+
   return smoothSharpTurns(rawCoordinates)
+
 }
+
+function getPathLength(coords) {
+  let total = 0
+
+  for (let i = 0; i < coords.length - 1; i++) {
+
+    const lat1 = coords[i][0]
+    const lng1 = coords[i][1]
+
+    const lat2 = coords[i + 1][0]
+    const lng2 = coords[i + 1][1]
+
+    const dLat = (lat2 - lat1) * 111
+
+    const dLng =
+      (lng2 - lng1) *
+      111 *
+      Math.cos(lat1 * Math.PI / 180)
+
+    total += Math.sqrt(
+      dLat * dLat +
+      dLng * dLng
+    )
+  }
+
+  return total
+}
+

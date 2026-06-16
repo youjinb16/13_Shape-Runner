@@ -32,6 +32,7 @@ export const calculateDTWDistance = (route, fullPath) => {
 
 // 메인 유사도 측정 함수 (route: 원본 도형, fullPathCoordinates: 실제 도로 경로)
 export function calculateShapeAccuracy(route, fullPathCoordinates) {
+
   if (!route || !fullPathCoordinates || route.length === 0 || fullPathCoordinates.length === 0) {
     return { accuracyScore: 0, dtwScore: 0, finalCombinedScore: 0 };
   }
@@ -47,15 +48,29 @@ export function calculateShapeAccuracy(route, fullPathCoordinates) {
     totalDistance += minDistance;
   }
   const avgDistance = totalDistance / fullPathCoordinates.length;
+
   // 기존 프로젝트의 거리 스케일 가중치(150000) 유지하여 점수화
-  const accuracyScore = Math.max(0, Math.min(100, Math.round(100 - avgDistance * 150000)));
+  const accuracyScore = //점수 오류 수정 - 박유진
+    Math.max(
+      0,
+      Math.round(
+        100 * Math.exp(-avgDistance * 800)
+      )
+    )
 
   // 알고리즘 2: 동적 계획법 기반 DTW 궤적 흐름 검증
   const totalDTWCost = calculateDTWDistance(route, fullPathCoordinates);
   const averageDTWCost = totalDTWCost / (route.length + fullPathCoordinates.length);
-  // DTW 위경도 스케일에 맞춘 민감도 가중치 보정
-  const dtwScore = Math.max(0, Math.min(100, Math.round(100 - averageDTWCost * 200000)));
 
+  
+  // DTW 위경도 스케일에 맞춘 민감도 가중치 보정
+  const dtwScore = //점수 오류 수정 - 박유진
+    Math.max(
+      0,
+      Math.round(
+        100 * Math.exp(-averageDTWCost * 1000)
+      )
+    )
   // 최종 결합 점수 (공간 50% + 패턴 50%)
   const finalCombinedScore = Math.round((accuracyScore + dtwScore) / 2);
 

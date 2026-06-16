@@ -6,7 +6,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-async function fetchRoadGraph(lat, lng, radius = 2000) {
+async function fetchRoadGraph(lat, lng, radius = 3000) {
   const query = `
   [out:json][timeout:25];
   (

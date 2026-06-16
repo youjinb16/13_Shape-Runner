@@ -119,7 +119,7 @@ function App() {
   }
 
   const route = generateRoute({ shape, startPoint, distance, rotation })
-  const denseRoute = densifyRoute(route, 20)
+  const denseRoute = densifyRoute(route, 5)
   // 0531 창현 - useMemo로 감싸서 graph가 바뀔 때만 재계산 (매 렌더링마다 실행되던 성능 문제 수정)
   const fullPathCoordinates = useMemo(
     () => generateFullPathCoordinates({ graph, denseRoute }),

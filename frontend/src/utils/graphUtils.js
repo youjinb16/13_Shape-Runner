@@ -89,7 +89,7 @@ export function findNearestNode(lat, lng, graph) {
       nodeData.lng
     )
 
-    if (distance < minDistance && distance < 0.00025) {
+    if (distance < minDistance && distance < 0.0006) {
       minDistance = distance
       nearestNodeId = nodeId
     }
