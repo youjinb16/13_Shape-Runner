@@ -50,7 +50,7 @@ export function calculateShapeAccuracy(route, fullPathCoordinates) {
   const avgDistance = totalDistance / fullPathCoordinates.length;
 
   // 기존 프로젝트의 거리 스케일 가중치(150000) 유지하여 점수화
-  const accuracyScore = //점수 오류 수정 - 박유진
+  const accuracyScore =
     Math.max(
       0,
       Math.round(
@@ -64,7 +64,7 @@ export function calculateShapeAccuracy(route, fullPathCoordinates) {
 
   
   // DTW 위경도 스케일에 맞춘 민감도 가중치 보정
-  const dtwScore = //점수 오류 수정 - 박유진
+  const dtwScore = 
     Math.max(
       0,
       Math.round(

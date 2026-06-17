@@ -34,8 +34,12 @@ import { exportGPXFile } from '../utils/exportGPX';
 import { buildGraph } from '../utils/graphUtils';
 
 import { exportGPXFile as exportGPXWithLRU } from '../utils/routeModule';
-// 0617 창현 - 추가: GPX 저장 시 시작점을 '현 위치'로 기록 (커뮤니티 가까운 순 정렬용)
+
 import { saveMyLocation } from '../utils/communityModule';
+
+import {
+  calculateTotalDistance
+} from '../components/RouteComplexity'
 
 export default function RouteGeneratorPage({
   onNavigate,
@@ -128,9 +132,22 @@ export default function RouteGeneratorPage({
     setShowGpxConfirm(false)
     setGpxFlash(true)
     setTimeout(() => setGpxFlash(false), 600)
-    // 0531 창현 - 기존 exportGPXFile을 LRU 자동 저장 기능이 추가된 버전으로 교체
-    exportGPXWithLRU(fullPathCoordinates, 'Shape Runner 경로', shape, Number(distance))
-    // 0617 창현 - 추가: 현재 시작점을 '현 위치'로 저장 (커뮤니티 '가까운 순' 정렬 기준점)
+    const today = new Date()
+
+    const fileName =
+      `${today.getFullYear()}-${
+        String(today.getMonth() + 1).padStart(2, "0")
+      }-${
+        String(today.getDate()).padStart(2, "0")
+      }_Shape Runner`
+
+    exportGPXWithLRU(
+      fullPathCoordinates,
+      fileName,
+      shape,
+      totalDistance
+    )
+   
     if (startPoint) saveMyLocation(startPoint)
     setShowToast(true)
     setTimeout(() => setShowToast(false), 1500)
@@ -138,13 +155,18 @@ export default function RouteGeneratorPage({
 
   const route = generateRoute({ shape, startPoint, distance, rotation })
   const denseRoute = densifyRoute(route, 5)
-  // 0531 창현 - useMemo로 감싸서 graph가 바뀔 때만 재계산 (매 렌더링마다 실행되던 성능 문제 수정)
+  
   const fullPathCoordinates = useMemo(
     () => generateFullPathCoordinates({ graph, denseRoute }),
     [graph] // eslint-disable-line react-hooks/exhaustive-deps
   )
 
-  // 0531 창현 - 경로 목록 페이지 표시 중이면 RouteListPage 렌더링
+  const totalDistance =
+  calculateTotalDistance(
+    fullPathCoordinates
+  )
+
+  
   if (showList !== null) {
     return (
       <RouteListPage
@@ -157,7 +179,7 @@ export default function RouteGeneratorPage({
     )
   }
 
-  // 0531 창현 - 경로 생성하기 버튼 활성화 조건: 도형, 거리, 시작점 모두 설정된 경우
+  
   const canGenerate = !!shape && !!distance && !!startPoint && !loading
 
 
@@ -210,7 +232,7 @@ export default function RouteGeneratorPage({
             >
             ← 🏠메인 화면
             </button>
-        {/* 0531 창현 - 경로 목록 버튼 (최근 생성 경로 / 즐겨찾는 경로) */}
+      
         <button
           onClick={() => setShowList('recent')}
           style={{
@@ -264,7 +286,6 @@ export default function RouteGeneratorPage({
           distance={distance}
         />
 
-        {/* 0531 창현 - 경로 생성하기 버튼 추가: 클릭 시 도로 데이터 로드 및 실제 경로 생성 */}
         <div style={{ margin: '4px 0 16px' }}>
           <button
             onClick={handleGenerateRoute}
@@ -283,7 +304,7 @@ export default function RouteGeneratorPage({
           >
             {loading ? '경로 생성 중...' : '🚀 경로 생성하기'}
           </button>
-          {/* 0531 창현 - 경로 생성 조건 미충족 시 안내 문구 */}
+        
           {!canGenerate && !loading && (
             <p style={{ fontSize: '12px', color: '#aaa', marginTop: '6px', marginBottom: 0 }}>
               {!shape ? '도형을 선택해주세요' : !distance ? '거리를 입력해주세요' : !startPoint ? '지도에서 시작 지점을 클릭해주세요' : ''}
@@ -310,7 +331,7 @@ export default function RouteGeneratorPage({
           rightFlash={rightFlash}
         />
 
-        {/* 🛠️ 최영 담당 추가/수정 파트: 원본 Shape와 실제 도로 매핑 경로 간의 유사도 등급 측정 UI 연동 */}
+      
         <ShapeAccuracy
           route={route}
           fullPathCoordinates={
@@ -326,7 +347,7 @@ export default function RouteGeneratorPage({
           5. GPX 파일로 저장하세요
         </h3>
 
-        {/* 0531 창현 - GPX 버튼: onClick을 확인 알림 표시 함수로 변경 */}
+      
         <button
           onClick={handleGpxButtonClick}
           disabled={!fullPathCoordinates.length}
@@ -352,9 +373,30 @@ export default function RouteGeneratorPage({
           생성된 gpx 파일을 카카오맵 등에 불러와<br />
           즐겁고 신선한 러닝 경험을 즐기세요!
         </h3>
+
+        <button
+            onClick={() =>
+                navigate("/analysis")
+            }
+            style={{
+            padding: '7px 16px',
+            borderRadius: '8px',
+            border: '1.5px solid #189b81',
+            background: 'white',
+            color: '#189b81',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '13px',
+            marginBottom: '20px',
+            marginTop: '5px',
+          }}
+            >
+            📊 러닝 루트 분석 바로가기
+            </button>
+        
       </div>
 
-      {/* 0531 창현 - GPX 내보내기 확인 알림 팝업 */}
+  
       {showGpxConfirm && (
         <div
           style={{

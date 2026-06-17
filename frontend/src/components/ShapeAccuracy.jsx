@@ -40,7 +40,7 @@ export default function ShapeAccuracy({ route, fullPathCoordinates }) {
       }}
     >
       <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', color: '#333' }}>
-        📊 다각도 경로 유사도 평가 (Shape Accuracy)
+        📊 다각도 경로 유사도 평가 (Shape Accuracy) 📊
       </h3>
       
       {/* 등급 및 피드백 메시지 표시 파트 */}

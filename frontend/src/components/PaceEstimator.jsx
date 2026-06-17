@@ -74,7 +74,7 @@ export default function PaceEstimator({
         marginTop: '15px',
         padding: '16px',
         borderRadius: '12px',
-        background: '#eef7ff',
+        background: '#189b8129',
         border: '1px solid #b8ddff',
       }}
     >

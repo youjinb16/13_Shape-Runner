@@ -102,62 +102,66 @@ export default function CalorieEstimator({
         border: '1px solid #ffd59e',
       }}
     >
-      <h3>
-        🔥 예상 칼로리 소모량
-      </h3>
+      <h3>🔥 예상 칼로리 소모량</h3>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '8px',
-        }}
-      >
-        <select
-          value={gender}
-          onChange={(e) =>
-            setGender(e.target.value)
-          }
-        >
-          <option value="male">
-            남성
-          </option>
+<div
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px', // 👈 세트(성별, 나이, 키...)와 세트 사이의 간격을 넓힙니다.
+  }}
+>
+  {/* 1. 성별 세트 */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <h5 style={{ textAlign: 'left', margin: 0 }}>1. 성별</h5>
+    <select
+      value={gender}
+      onChange={(e) => setGender(e.target.value)}
+      style={{ padding: '8px', borderRadius: '4px' }} // 약간의 스타일 추가
+    >
+      <option value="male">남성</option>
+      <option value="female">여성</option>
+    </select>
+  </div>
 
-          <option value="female">
-            여성
-          </option>
-        </select>
+  {/* 2. 나이 세트 */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <h5 style={{ textAlign: 'left', margin: 0 }}>2. 나이</h5>
+    <input
+      type="number"
+      placeholder="나이"
+      value={age}
+      onChange={(e) => setAge(e.target.value)}
+      style={{ padding: '8px', borderRadius: '4px',}}
+    />
+  </div>
 
-        <input
-          type="number"
-          placeholder="나이"
-          value={age}
-          onChange={(e) =>
-            setAge(e.target.value)
-          }
-        />
+  {/* 3. 키 세트 */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <h5 style={{ textAlign: 'left', margin: 0 }}>3. 키(cm)</h5>
+    <input
+      type="number"
+      placeholder="키(cm)"
+      value={height}
+      onChange={(e) => setHeight(e.target.value)}
+      style={{ padding: '8px', borderRadius: '4px' }}
+    />
+  </div>
 
-        <input
-          type="number"
-          placeholder="키(cm)"
-          value={height}
-          onChange={(e) =>
-            setHeight(e.target.value)
-          }
-        />
+  {/* 4. 체중 세트 */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+    <h5 style={{ textAlign: 'left', margin: 0 }}>4. 체중(kg)</h5>
+    <input
+      type="number"
+      placeholder="체중(kg)"
+      value={weight}
+      onChange={(e) => setWeight(e.target.value)}
+      style={{ padding: '8px', borderRadius: '4px' }}
+    />
+  </div>
+</div>
 
-        <input
-          type="number"
-          placeholder="체중(kg)"
-          value={weight}
-          onChange={(e) =>
-            setWeight(e.target.value)
-          }
-        />
-      </div>
-
-      <hr />
-
+<hr />
       <p>
         예상 칼로리 소모량 :
         {' '}

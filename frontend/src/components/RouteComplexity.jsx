@@ -164,7 +164,7 @@ function calculateDistance(a, b) { //메인 코드와 호응하도록 변경, km
  * 사용 알고리즘 :
  * - 선형 탐색 (Linear Search)
  */
-function calculateTotalDistance(path) {
+export function calculateTotalDistance(path) {
   let total = 0;
 
   for (let i = 0; i < path.length - 1; i++) {
@@ -263,9 +263,9 @@ export default function RouteComplexityPanel({
     >
       <h3
       style={{
-        marginTop: "00px",
+         margin: '0 0 12px 0', fontSize: '16px', color: '#333' 
       }}>
-        🗺️ Route Complexity 🗺️
+        🗺️ 경로 복잡도 평가(Route Complexity) 🗺️
       </h3>
 
       <p>

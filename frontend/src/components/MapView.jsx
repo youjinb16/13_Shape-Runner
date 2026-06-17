@@ -1,7 +1,3 @@
-// [이창현 수정] MapView.jsx  ( frontend/src/components/MapView.jsx )
-// 0531 창현 - 도로 데이터 로딩 중 오버레이 안내 추가
-// 0531 창현 - 시작 지점 미설정 시 클릭 안내 문구 추가
-// 0531 창현 - fetchGraph 관련 props 제거 (App.jsx 경로 생성 버튼으로 분리)
 import {
   MapContainer,
   TileLayer,
@@ -12,19 +8,7 @@ import {
 import ClickHandler from './ClickHandler'
 
 /**
- * [이창현 수정] 지도 컴포넌트
- *
- * [변경 사항]
- * 1. 도로 데이터 로딩 중 오버레이 안내 추가
- *    기존: 로딩 중인지 사용자가 알 수 없음
- *    개선: loading 상태일 때 "도로 데이터 불러오는 중..." 반투명 오버레이 표시
- *
- * 2. 시작 지점 미설정 시 클릭 안내 문구 추가
- *    기존: 지도를 클릭해야 한다는 안내 없음
- *    개선: 시작점 미설정 시 지도 상단에 클릭 안내 문구 표시
- *
- * 3. fetchGraph 관련 props 제거
- *    도로 데이터 로드를 App.jsx의 "경로 생성하기" 버튼으로 분리하면서 불필요해진 props 제거
+ * 
  *
  * @param {Array}    startPoint           - 시작점 좌표 [lat, lng]
  * @param {Array}    route                - 예시 도형 좌표 배열 (빨간 점선으로 표시)
@@ -47,7 +31,6 @@ function MapView({
   return (
     <div style={{ position: 'relative' }}>
 
-      {/* 0531 창현 - 도로 데이터 불러오는 중 오버레이 안내 */}
       {loading && (
         <div
           style={{
@@ -69,7 +52,6 @@ function MapView({
         </div>
       )}
 
-      {/* 0531 창현 - 시작 지점 미설정 시 클릭 안내 문구 표시 */}
       {!loading && !startPoint && (
         <div
           style={{
@@ -109,7 +91,6 @@ function MapView({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {/* 0531 창현 - ClickHandler: fetchGraph 제거, 시작점 설정만 수행 */}
         <ClickHandler
           setStartPoint={setStartPoint}
           loading={loading}
@@ -117,7 +98,6 @@ function MapView({
 
         {startPoint && <Marker position={startPoint} />}
 
-        {/* 예시 도형 (빨간 점선) — 지도 클릭 즉시 표시 */}
         {shape && startPoint && distance && (
           <Polyline
             positions={route}
@@ -125,7 +105,6 @@ function MapView({
           />
         )}
 
-        {/* 실제 경로 (파란 선) — 경로 생성하기 버튼 클릭 후 표시 */}
         {fullPathCoordinates.length > 0 && (
           <Polyline
             positions={fullPathCoordinates}
