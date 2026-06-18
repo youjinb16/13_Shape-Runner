@@ -6,7 +6,7 @@ import {
 } from './geometryUtils'
 
 /**
- * 1. OpenStreetMap(OSM) 요소 배열을 기반으로 인접 리스트(Adjacency List) 형태의 그래프를 생성합니다.
+ * 1. 그래프 생성 알고리즘. OpenStreetMap(OSM) 요소 배열을 기반으로 인접 리스트(Adjacency List) 형태의 그래프를 생성합니다.
  */
 export function buildGraph (elements) {
   const nodes = {}          // 노드 ID를 키로 하여 위경도 좌표(lat, lng)를 저장하는 객체
