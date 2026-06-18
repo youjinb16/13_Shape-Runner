@@ -107,7 +107,7 @@ export function findNearestNode(lat, lng, graph) {
 }
 
 /**
- * 3. 다익스트라(Dijkstra) 알고리즘을 사용해 시작 노드와 도착 노드 간의 최단 경로를 탐색합니다.
+ * 3. 다익스트라(Dijkstra) 알고리즘. 시작 노드와 도착 노드 간의 최단 경로를 탐색합니다.
  */
 export function dijkstraShortestPath(
   startNode,
